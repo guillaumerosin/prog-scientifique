@@ -64,10 +64,7 @@ exact = antiderivative(4.0) - antiderivative(1.0)
 
 # ============================================================
 # RÉSULTATS
-# ============================================================
-println("=" ^ 55)
 println("  ∫₁⁴ cos(ln(x)) dx — Simpson Composite")
-println("=" ^ 55)
 println()
 println("Valeur exacte analytique : $(round(exact, digits=8))")
 println()
