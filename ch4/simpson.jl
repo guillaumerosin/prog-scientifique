@@ -1,5 +1,6 @@
 # Intégration numérique par la règle de Simpson composite
 # Calcul de ∫₁⁴ cos(ln(x)) dx
+using Printf
 
 # Fonction à intégrer
 f(x) = cos(log(x))
@@ -7,7 +8,7 @@ f(x) = cos(log(x))
 # Règle de Simpson composite
 function simpson_composite(f, a, b, N)
     if N % 2 != 0
-        error("N doit être pair pour la règle de Simpson.")
+        error("N doit être pair")
     end
 
     h = (b - a) / N
@@ -26,27 +27,24 @@ end
 a = 1.0
 b = 4.0
 
-println("=" ^ 50)
+
 println("Intégrale de cos(ln(x)) sur [1, 4]")
 println("Règle de Simpson composite")
 println("=" ^ 50)
 println()
 
-# Affichage pour différentes valeurs de N
-println("  N  |   Résultat     | Erreur relative")
-println("-" ^ 42)
-
 exact = simpson_composite(f, a, b, 10000)  # valeur de référence
 
-for N in [2, 4, 6, 8, 10, 20, 50, 100]
-    result = simpson_composite(f, a, b, N)
-    err = abs((result - exact) / exact) * 100
-    @printf("  %3d | %14.8f | %.6f %%\n", N, result, err)
+print("Entrez la valeur de N (entier pair) : ")
+N = parse(Int, readline())
+
+if N % 2 != 0
+    error("N doit être pair.")
 end
 
 println()
-println("Résultat avec N = 4 (comme dans l'exercice) :")
-N = 4
+println("Résultat avec N = $N :")
+
 h = (b - a) / N
 result = simpson_composite(f, a, b, N)
 
