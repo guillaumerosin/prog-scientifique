@@ -3,7 +3,7 @@
 # Scientific Programming - Chapter 5
 # Variable aléatoire X = k, où time(algo(input)) = a × input^k
 # =============================================================================
-
+# 
 library(tidyverse)
 
 # =============================================================================
