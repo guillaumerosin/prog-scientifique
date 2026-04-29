@@ -1,0 +1,4 @@
+Test,H0,Statistique,p_value,Rejet_H0
+Mann-Whitney (1 vs ref),distributions égales,1504.0,0.012855854847927492,true
+Wilcoxon signed-rank,médiane = 8.0,0.0,0.001953125,true
+Bootstrap P(≥8),P(moy ≥ 8.0),0.0012,0.0012,true

@@ -22,13 +22,60 @@
 \AC@reset@newl@bel
 \bibstyle{plain-fr}
 \babel@aux{french}{}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Une partie}{2}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Une sous-partie}{2}{subsection.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Insérer ici le sous-titre.\relax }}{2}{figure.caption.2}\protected@file@percent }
+\citation{imdb_dataset}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Contexte et question de recherche}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Définition opérationnelle du succès}{2}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Structure du rapport}{2}{subsection.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Exploration des données et reproductibilité (Ch.~2 et 3)}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Environnement Julia reproductible (Ch.~2)}{3}{subsection.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Activation de l'environnement et fixation de la graine aléatoire}}{3}{lstlisting.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Présentation du jeu de données}{3}{subsection.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Les huit fichiers CSV du dataset IMDb.\relax }}{4}{table.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:id-de-la-figure}{{1}{2}{Insérer ici le sous-titre.\relax }{figure.caption.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Une autre partie}{2}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Une autre sous-partie}{2}{subsection.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion}{3}{section.4}\protected@file@percent }
-\gdef \@abspage@last{5}
+\newlabel{tab:csv}{{1}{4}{Les huit fichiers CSV du dataset IMDb.\relax }{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}One Piece dans les données (Ch.~3 — valeurs manquantes)}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Construction de la série temporelle (Ch.~3 et 4)}{5}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Découpage en sagas officielles}{5}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Découpage en sagas et paramètres ODE ajustés (voir section suivante).\relax }}{5}{table.caption.3}\protected@file@percent }
+\newlabel{tab:sagas}{{2}{5}{Découpage en sagas et paramètres ODE ajustés (voir section suivante).\relax }{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Intégration numérique par trapèzes (Ch.~4)}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{eq:trapeze}{{1}{5}{Intégration numérique par trapèzes (Ch.~4)}{equation.3.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Intégration par trapèzes (extrait de \texttt  {02\_timeseries.jl})}}{6}{lstlisting.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Note IMDb moyenne par saga avec barres d'erreur $\pm 1\sigma $. La droite rouge représente le seuil de succès à 8{,}0. Aucune saga n'atteint ce seuil en moyenne, bien que la saga 9 (Quatre Empereurs) soit la plus proche.\relax }}{6}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:sagas}{{1}{6}{Note IMDb moyenne par saga avec barres d'erreur $\pm 1\sigma $. La droite rouge représente le seuil de succès à 8{,}0. Aucune saga n'atteint ce seuil en moyenne, bien que la saga 9 (Quatre Empereurs) soit la plus proche.\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Modélisation ODE et prédiction par RK4 (Ch.~4)}{8}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Modèle de retour à la moyenne}{8}{subsection.4.1}\protected@file@percent }
+\newlabel{eq:ode}{{2}{8}{Modèle de retour à la moyenne}{equation.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Implémentation de Runge-Kutta 4 (Ch.~4 et Ch.~2)}{8}{subsection.4.2}\protected@file@percent }
+\newlabel{eq:rk4}{{3}{8}{Implémentation de Runge-Kutta 4 (Ch.~4 et Ch.~2)}{equation.4.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Implémentation de RK4 (extrait de \texttt  {03\_ode\_rk4.jl})}}{8}{lstlisting.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Ajustement des paramètres par grille de recherche}{10}{subsection.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Saga 9 (Quatre Empereurs) — Notes épisode par épisode (bleu) et courbe ODE RK4 ajustée (orange). L'attracteur $K = 7{,}95$ est la ligne rouge en tirets.\relax }}{10}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:ode9}{{2}{10}{Saga 9 (Quatre Empereurs) — Notes épisode par épisode (bleu) et courbe ODE RK4 ajustée (orange). L'attracteur $K = 7{,}95$ est la ligne rouge en tirets.\relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Prédiction de la saga 10 (Wano Country)}{10}{subsection.4.4}\protected@file@percent }
+\newlabel{eq:Ktrend}{{4}{10}{Prédiction de la saga 10 (Wano Country)}{equation.4.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Évolution de l'attracteur $K$ par saga avec la tendance linéaire et la prédiction pour la saga~10 (étoile rouge).\relax }}{11}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:Kevol}{{3}{11}{Évolution de l'attracteur $K$ par saga avec la tendance linéaire et la prédiction pour la saga~10 (étoile rouge).\relax }{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Profil d'épisodes prédit pour la saga~10 par intégration RK4. La moyenne prédite est $7{,}791$ (tirets) avec la bande $\pm 1\sigma $.\relax }}{11}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:pred10}{{4}{11}{Profil d'épisodes prédit pour la saga~10 par intégration RK4. La moyenne prédite est $7{,}791$ (tirets) avec la bande $\pm 1\sigma $.\relax }{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Tests statistiques (Ch.~5)}{12}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Test 1 — Mann-Whitney (deux échantillons)}{12}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Boîtes à moustaches~: One Piece (9 sagas, orange) vs groupe de référence (646 sagas, bleu). La médiane du groupe de référence dépasse le seuil de succès, celle d'One Piece reste en-dessous.\relax }}{13}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:boxplot}{{5}{13}{Boîtes à moustaches~: One Piece (9 sagas, orange) vs groupe de référence (646 sagas, bleu). La médiane du groupe de référence dépasse le seuil de succès, celle d'One Piece reste en-dessous.\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Test 2 — Wilcoxon signed-rank (un échantillon)}{13}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Test 3 — Bootstrap (B~= 10\,000)}{14}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Synthèse des tests}{14}{subsection.5.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Synthèse des trois tests statistiques.\relax }}{14}{table.caption.9}\protected@file@percent }
+\newlabel{tab:tests}{{3}{14}{Synthèse des trois tests statistiques.\relax }{table.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Distribution bootstrap des notes moyennes simulées pour la saga~10 ($B = 10\,000$, 120 épisodes par tirage). L'IC à 95~\% reste bien en-deçà du seuil de succès (ligne rouge).\relax }}{15}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:boot}{{6}{15}{Distribution bootstrap des notes moyennes simulées pour la saga~10 ($B = 10\,000$, 120 épisodes par tirage). L'IC à 95~\% reste bien en-deçà du seuil de succès (ligne rouge).\relax }{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{15}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Réponse à la question de recherche}{15}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Nuances et limitations}{15}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Bilan des chapitres mobilisés}{17}{subsection.6.3}\protected@file@percent }
+\bibcite{imdb_dataset}{1}
+\bibcite{julia}{2}
+\bibcite{hypothesis_tests}{3}
+\bibcite{onepiecewiki}{4}
+\gdef \@abspage@last{20}
