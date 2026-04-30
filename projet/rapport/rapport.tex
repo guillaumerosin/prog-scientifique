@@ -107,6 +107,38 @@ par modélisation ODE et tests statistiques en Julia}\\[0.4cm]
 % =============================================================================
 \section{Introduction}
 
+\subsection{La programmation scientifique}
+
+La programmation scientifique consiste à utiliser le code comme outil de
+résolution de problèmes réels~: modélisation, analyse de données, simulation
+et prédiction. Elle se distingue du développement logiciel classique par son
+orientation vers la rigueur mathématique et la reproductibilité des résultats.
+
+Les langages de programmation dits «~généraux~» couramment utilisés sont~:
+Fortran, C/C++, Java, Swift, C\#, Go, JavaScript et Python. Dans ce projet,
+nous utilisons \textbf{Julia}, un langage conçu spécifiquement pour le calcul
+scientifique~: il combine la simplicité de Python et les performances de C.
+
+Le processus de travail typique du programmeur scientifique suit six étapes~:
+
+\begin{enumerate}
+  \item \textbf{Analyser le problème}~: comprendre la question posée et identifier
+        les données disponibles.
+  \item \textbf{Écrire le code}~: implémenter une première solution.
+  \item \textbf{Analyser le comportement et les résultats}~: vérifier que les
+        sorties sont cohérentes et interprétables.
+  \item \textbf{Refactorer}~: réorganiser le code pour le rendre plus lisible
+        et maintenable.
+  \item \textbf{Itérer}~: affiner la solution en répétant les étapes précédentes.
+  \item \textbf{Améliorer le modèle}~: enrichir l'approche avec des méthodes
+        plus précises ou plus robustes.
+\end{enumerate}
+
+Avant de commencer à coder, j'ai donc commencé par \textbf{analyser le problème}~:
+identifier une question de recherche concrète, choisir un jeu de données adapté,
+et définir précisément ce que signifie le «~succès~» dans ce contexte. Ces décisions
+sont détaillées dans les sous-sections suivantes.
+
 \subsection{Contexte et question de recherche}
 
 \textit{One Piece} est une série animée japonaise adaptée
@@ -241,6 +273,25 @@ Piece sont tous enregistrés sous \code{Season = 1} dans le fichier
 % =============================================================================
 \newpage
 \section{Construction de la série temporelle (Ch.~3 et 4)}
+
+\begin{tcolorbox}[justif, title={Pourquoi les notes IMDb forment-elles une série temporelle~?}]
+Une \textbf{série temporelle} est une suite de valeurs numériques ordonnées dans
+le temps, espacées de manière régulière. Les notes IMDb de One Piece satisfont
+exactement cette définition~:
+
+\begin{itemize}
+  \item Chaque \textbf{épisode} constitue un point de mesure, dans l'ordre de
+        diffusion chronologique.
+  \item Les points sont \textbf{régulièrement espacés}~: un épisode par semaine
+        en diffusion normale.
+  \item La \textbf{granularité} peut être choisie~: épisode par épisode (883~points)
+        ou saga par saga (9~points agrégés), selon le niveau d'analyse souhaité.
+\end{itemize}
+
+Dans ce projet, nous travaillons à la granularité \textbf{saga}~: chaque saga
+devient un point de la série, caractérisé par sa note moyenne. C'est cette série
+de 9~points qui servira d'entrée au modèle ODE pour prédire la saga~10.
+\end{tcolorbox}
 
 \subsection{Découpage en sagas officielles}
 
@@ -751,9 +802,8 @@ Cette sous-estimation est cohérente avec les limitations identifiées~:
 \end{enumerate}
 En résumé~: notre modèle fournit une \textbf{borne inférieure prudente}.
 Selon les données réelles, Wano est probablement le premier arc de One Piece
-à atteindre — voire dépasser — la moyenne de 8{,}0.
+à atteindre, voire dépasser, la moyenne de 8{,}0.
 \end{tcolorbox}
-
 
 
 % =============================================================================
