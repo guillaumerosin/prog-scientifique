@@ -320,6 +320,7 @@ $\bm{K}$ & $\bm{\lambda}$ \\
 \textbf{7{,}822} & 0{,}096 \\
 \bottomrule
 \end{tabular}
+
 \end{table}
 
 Le code utilisé se situe aux lignes 29--55 et j'ai commenté les lignes.
@@ -569,7 +570,7 @@ saga~10 est~:
 
 \begin{equation}
   \hat{R}_{10} = 7{,}791 \quad
-  \text{IC}~\pm 1\sigma_{\text{résidus}}~: \left[7{,}44\,;\, 8{,}14\right]
+  \text{IC bootstrap à 95\,\%}~: \left[7{,}713\,;\, 7{,}933\right]
 \end{equation}
 
 % =============================================================================
@@ -682,6 +683,7 @@ $p$-value (unilatérale) & \textbf{0{,}0020} \\
 % -------------------------------- 
 
 \subsection{Test 3 : Bootstrap (B~= 10\,000)}
+\label{sec:bootstrap}
 
 \textbf{Objectif~:} quantifier la probabilité que la saga~10 atteigne une moyenne
 de 8{,}0, en s'appuyant sur la distribution empirique des épisodes de la saga~9
@@ -733,12 +735,64 @@ $\hat{p} = P(\bar{R} \geq 8{,}0)$ & \textbf{0{,}0012} \\
 Mann-Whitney & Distributions identiques & 0{,}013 & Oui ($\alpha = 0{,}05$) \\
 Wilcoxon signed-rank & Médiane = 8{,}0 & 0{,}002 & Oui ($\alpha = 0{,}05$) \\
 Bootstrap & $P(\bar{R} \geq 8{,}0)$ & 0{,}0012 & Oui ($\alpha = 0{,}05$) \\
+ARIMA(1,0,0) & IC~95\,\% contient 8{,}0 & — & Oui (8{,}0 hors IC) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Les trois tests convergent~: la prédiction ODE ($\hat{R}_{10} = 7{,}791$) est
 statistiquement robuste.
+
+\subsection{Test 4 : ADF et ARIMA (vérification de stationnarité + prédiction alternative)}
+
+\subsubsection*{Test ADF — stationnarité de la série des épisodes}
+
+Avant d'appliquer un modèle ARIMA, il est nécessaire de vérifier si la série
+est \textbf{stationnaire}~: ses propriétés statistiques (moyenne, variance) ne
+doivent pas dépendre du temps. On applique le \textbf{test de Dickey-Fuller
+augmenté (ADF)} sur les 883~notes d'épisodes.
+
+Le modèle ADF(1) avec constante est~:
+\begin{equation}
+  \Delta y_t = \alpha + \gamma\, y_{t-1} + \delta\,\Delta y_{t-1} + \varepsilon_t
+\end{equation}
+On teste $H_0 : \gamma = 0$ (racine unitaire, série non stationnaire)
+contre $H_1 : \gamma < 0$ (série stationnaire).
+
+\begin{table}[ht!]
+\centering
+\caption{Résultat du test ADF sur les 883 notes d'épisodes.}
+\begin{tabular}{lr}
+\toprule
+t-statistique ADF & $-11{,}14$ \\
+Valeur critique 1\,\% & $-3{,}43$ \\
+Valeur critique 5\,\% & $-2{,}86$ \\
+\midrule
+\textbf{Conclusion} & Rejet de $H_0$ à 1\,\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La série est \textbf{stationnaire}~: $d = 0$, aucune différenciation n'est
+nécessaire avant d'appliquer ARIMA.
+
+\subsubsection*{ARIMA(1,0,0) — prédiction alternative de la saga~10}
+
+On ajuste un modèle AR(1) sur les 9~notes moyennes de sagas~:
+\begin{equation}
+  y_t = \alpha + \varphi\, y_{t-1} + \varepsilon_t
+  \quad \hat{\alpha} = 8{,}246,\quad \hat{\varphi} = -0{,}087
+\end{equation}
+
+La prédiction pour la saga~10 est~:
+\begin{equation}
+  \hat{R}_{10}^{\text{ARIMA}} = 7{,}565
+  \quad \text{IC 95\,\%}~: \left[7{,}265\,;\, 7{,}866\right]
+\end{equation}
+
+Le seuil de 8{,}0 est \textbf{hors de l'IC à 95\,\%}, ce qui confirme
+la conclusion du modèle ODE~: Wano ne devrait pas atteindre le seuil de succès.
+Les deux modèles (ODE et ARIMA) s'accordent sur cette conclusion.
 
 % =============================================================================
 %                            CONCLUSION
@@ -777,6 +831,14 @@ Cette conclusion doit être nuancée sur plusieurs points~:
         genres très divers (documentaires, talk-shows, séries policières). Un
         groupe limité aux séries animées longues donnerait une comparaison plus
         homogène.
+  \item \textbf{Saisonnalité et cycles non modélisés~:} une série temporelle
+        peut présenter trois composantes~: une \textit{tendance} (couverte ici
+        via la progression de $K$), une \textit{saisonnalité} (pics de notes à
+        certains moments narratifs clés, comme Marineford ou Onigashima) et des
+        \textit{cycles} (alternance d'arcs très notés et d'arcs plus faibles).
+        Ces deux dernières composantes n'ont pas été modélisées~: avec seulement
+        9~points de saga, le nombre d'observations est insuffisant pour estimer
+        des effets saisonniers ou cycliques de manière fiable.
 \end{itemize}
 
 \begin{tcolorbox}[justif, title={La prédiction est-elle fiable~? Confrontation avec la réalité}]

@@ -9,7 +9,7 @@ using CSV, DataFrames, Statistics, Printf
 import Random
 Random.seed!(42)
 
-# ── Chemins ───────────────────────────────────────────────────────────────────
+# Chemins 
 DATA_DIR = joinpath(@__DIR__, "..", "data")
 
 CSV_FILES = [
