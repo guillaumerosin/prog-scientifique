@@ -347,8 +347,7 @@ De plus, la formule~\eqref{eq:trapeze} se généralise naturellement aux donnée
 
 \subsection{Modèle de retour à la moyenne}
 
-La dynamique des notes à l'intérieur d'une saga est modélisée par l'équation
-différentielle ordinaire (ODE) suivante~:
+La dynamique des notes à l'intérieur d'une saga est modélisée par l'équation différentielle ordinaire (ODE) suivante~:
 
 \begin{equation}
   \derd{R}{t} = -\lambda \bigl(R(t) - K\bigr)
@@ -360,19 +359,15 @@ où~:
   \item $R(t)$ est la note de l'épisode à l'indice $t$ (temps discret),
   \item $K$ est l'\textbf{attracteur} de la saga~: la qualité de fond vers
         laquelle les notes convergent,
-  \item $\lambda > 0$ est la \textbf{vitesse de retour}~: un $\lambda$ grand
-        signifie que les notes se stabilisent rapidement autour de $K$.
+  \item $\lambda > 0$ est la \textbf{vitesse de retour}~: un $\lambda$ grand signifie que les notes se stabilisent rapidement autour de $K$.
 \end{itemize}
 
 La solution analytique est $R(t) = K + (R_0 - K)\,e^{-\lambda t}$, ce qui
 confirme la convergence exponentielle vers $K$. Ce modèle est de type
-\textit{Ornstein-Uhlenbeck} (retour à la moyenne), couramment utilisé en finance
-et en physique statistique.
+\textit{Ornstein-Uhlenbeck} (retour à la moyenne), couramment utilisé en finance et en physique statistique.
 
 \begin{tcolorbox}[justif, title={Autrement dit}]
-Chaque saga possède une note «~naturelle~» $K$ vers laquelle les épisodes tendent
-à revenir. Si un épisode est très bien noté, le suivant redescend vers $K$~; s'il
-est mal noté, le suivant remonte.
+Chaque saga possède une note «~naturelle~» $K$ vers laquelle les épisodes tendent à revenir. Si un épisode est très bien noté, le suivant redescend vers $K$~; s'il est mal noté, le suivant remonte.
 
 Le paramètre $\lambda$ contrôle \textbf{à quelle vitesse} ce retour s'opère~:
 un $\lambda$ élevé signifie que les notes sont très stables et proches de $K$~;
@@ -381,7 +376,10 @@ un $\lambda$ faible signifie que les notes varient beaucoup autour de $K$.
 C'est ce modèle qui permet ensuite de \textbf{prédire la note de la saga~10
 (Wano)} en estimant $K$ et $\lambda$ à partir des sagas précédentes.
 \end{tcolorbox}
-
+% ----------------------------------------
+% Impléùmentation fr Runge-Kutt 
+% --------------------------------------------
+\newpage 
 \subsection{Implémentation de Runge-Kutta 4 (Ch.~4 et Ch.~2)}
 
 La résolution numérique de l'équation~\eqref{eq:ode} est effectuée par le schéma
@@ -532,14 +530,14 @@ saga~10 est~:
 Trois tests sont réalisés avec le package \code{HypothesisTests.jl} afin de
 valider ou infirmer la prédiction.
 
-\subsection{Test 1 — Mann-Whitney (deux échantillons)}
+\subsection{Test 1 : Mann-Whitney (deux échantillons)}
 
-\textbf{Objectif~:} comparer la distribution des notes de saga d' da à celle
+\textbf{Objectif~:} comparer la distribution des notes de saga d'Oda à celle
 d'un \textit{groupe de référence} composé de toutes les sagas issues de séries
 longues ($\geq 5$ sagas, One Piece exclu)~: 646 sagas de 74 séries.
 
 \begin{align*}
-  H_0 &: \text{les distributions d'One Piece et du groupe de référence sont identiques} \\
+  H_0 &: \text{les distributions de One Piece et du groupe de référence sont identiques} \\
   H_1 &: \text{les deux distributions sont différentes (test bilatéral)}
 \end{align*}
 
@@ -594,7 +592,14 @@ comparable. La figure~\reff{fig:boxplot} le visualise clairement.
   \label{fig:boxplot}
 \end{figure}
 
-\subsection{Test 2 — Wilcoxon signed-rank (un échantillon)}
+\newpage
+
+% ----------------------------
+% Wilcoxon signed-rank
+% -------------------------------- 
+
+
+\subsection{Test 2 : Wilcoxon signed-rank (un échantillon)}
 
 \textbf{Objectif~:} tester formellement si la médiane des notes de saga d'One
 Piece est inférieure au seuil de succès.
@@ -620,7 +625,12 @@ $p$-value (unilatérale) & \textbf{0{,}0020} \\
 8{,}0 en moyenne. L'IC confirme que la médiane se situe entre 0{,}31 et
 0{,}52 point sous le seuil, de façon hautement significative ($p < 0{,}01$).
 
-\subsection{Test 3 — Bootstrap (B~= 10\,000)}
+\newpage
+% ----------------------------
+% Bootstrap
+% -------------------------------- 
+
+\subsection{Test 3 : Bootstrap (B~= 10\,000)}
 
 \textbf{Objectif~:} quantifier la probabilité que la saga~10 atteigne une moyenne
 de 8{,}0, en s'appuyant sur la distribution empirique des épisodes de la saga~9
@@ -744,24 +754,7 @@ Selon les données réelles, Wano est probablement le premier arc de One Piece
 à atteindre — voire dépasser — la moyenne de 8{,}0.
 \end{tcolorbox}
 
-\subsection{Bilan des chapitres mobilisés}
 
-\begin{center}
-\begin{tabular}{L{1.5cm} L{10.5cm}}
-\toprule
-\textbf{Ch.} & \textbf{Mobilisation dans ce projet} \\
-\midrule
-Ch.~2 & \code{Project.toml} + \code{Manifest.toml}, seed \code{42}, discussion
-        erreur $\mathcal{O}(h^4)$ de RK4 vs $\mathcal{O}(h^2)$ d'Euler \\
-Ch.~3 & Détection des \code{missing} avec \code{ismissing}, modélisation des
-        notes par saga comme série temporelle, régression pour la prédiction de $K$ \\
-Ch.~4 & ODE de retour à la moyenne $dR/dt = -\lambda(R-K)$, implémentation
-        manuelle de RK4, intégration par Simpson pour la note pondérée \\
-Ch.~5 & Mann-Whitney (2 échantillons), Wilcoxon signed-rank (1 échantillon),
-        bootstrap non-paramétrique — tous via \code{HypothesisTests.jl} \\
-\bottomrule
-\end{tabular}
-\end{center}
 
 % =============================================================================
 %                          BIBLIOGRAPHIE

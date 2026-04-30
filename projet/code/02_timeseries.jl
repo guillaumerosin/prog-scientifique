@@ -94,10 +94,10 @@ ts = combine(groupby(op, [:SagaId, :SagaName]),
 )
 sort!(ts, :SagaId)
 
-# ── 6. Affichage ──────────────────────────────────────────────────────────────
-println("\n", "="^72)
-println("SÉRIE TEMPORELLE ONE PIECE — note par saga")
-println("="^72)
+# 6. Affichage 
+println("\n")
+println("SÉRIE TEMPORELLE ONE PIECE définition des notes par saga")
+println("-"^72)
 @printf("%-4s  %-22s  %6s  %9s  %9s  %6s  %5s-%5s\n",
         "Saga", "Nom", "NbEps", "MoySimple", "Trapèze", "Std", "Min", "Max")
 println("-"^72)
@@ -108,16 +108,16 @@ for row in eachrow(ts)
             row.Min, row.Max)
 end
 
-# ── 7. Différence trapèzes vs moyenne simple ──────────────────────────────────
+# Confirmation de la différence trapèzes vs moyenne simple
 println("\nÉcart max entre trapèze et moyenne simple : ",
         @sprintf("%.5f", maximum(abs.(ts.MoyTrapeze .- ts.MoySimple))),
         " point (confirme que la différence est faible mais non nulle)")
 
-# ── 8. Sauvegarde du résultat ─────────────────────────────────────────────────
+# 7. Sauvegarde du résultat
 CSV.write(joinpath(RESULTS_DIR, "one_piece_sagas.csv"), ts)
 println("\nFichier sauvegardé → results/one_piece_sagas.csv")
 
-# ── 9. Visualisation ──────────────────────────────────────────────────────────
+# 8. Visualisation 
 # Courbe des notes moyennes par saga avec barres d'erreur ± std
 p = plot(
     ts.SagaId,
