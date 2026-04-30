@@ -1,8 +1,4 @@
-# 01_explore.jl — Exploration initiale des 8 fichiers CSV du dataset IMDb
-# Ch2 : projet reproductible (Pkg.activate + seed fixée)
-# Ch3 : détection et comptage des valeurs manquantes
-
-# ── Activation de l'environnement isolé (Ch2 : reproductibilité) ──────────────
+# Activation de l'environnement isolé
 import Pkg
 Pkg.activate(@__DIR__)   # charge le Project.toml situé dans code/
 Pkg.instantiate()        # installe les dépendances manquantes si nécessaire
@@ -69,7 +65,7 @@ function print_table(df::DataFrame; max_rows=3, max_col_width=22)
     println(sep)
 end
 
-# ── Boucle principale d'exploration ───────────────────────────────────────────
+# Boucle principale d'exploration 
 for fname in CSV_FILES
     path = joinpath(DATA_DIR, fname)
     # missingstring : liste des chaînes à interpréter comme `missing` (Ch3)

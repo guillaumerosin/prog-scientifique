@@ -109,10 +109,10 @@ par modélisation ODE et tests statistiques en Julia}\\[0.4cm]
 
 \subsection{Contexte et question de recherche}
 
-\textit{One Piece} (\textit{Wan pîsu}) est une série animée japonaise (anime) adaptée
+\textit{One Piece} est une série animée japonaise adaptée
 du manga éponyme d'Eiichirô Oda, diffusée depuis 1999 sur Fuji TV. Avec plus de
 1~000~épisodes produits, elle est l'une des séries les plus longues de l'histoire
-de la télévision mondiale. Sur la base de données IMDb, elle porte le code
+de la télévision mondiale. Sur la base de données IMDb (Regroupe les notes moyenne donnée par les utilisateurs), elle porte le code
 \code{tt0388629} et affiche une note globale de \textbf{8{,}4/10}.
 
 La question de recherche posée dans ce projet est~:
@@ -127,7 +127,7 @@ regroupe les notes par épisode de 250 séries parmi les mieux notées.
 
 \subsection{Définition opérationnelle du succès}
 
-Dans ce travail, une saga est qualifiée de \textbf{succès} si sa \textbf{note IMDb
+Dans ce travail, j'ai défini qu'une saga est qualifiée de \textbf{succès} si sa \textbf{note IMDb
 moyenne} atteint ou dépasse le seuil de \textbf{8{,}0/10}. Ce seuil correspond
 approximativement à la médiane des sagas des séries longues du top-250 (médiane
 observée~: 8{,}11). Le nombre de votes n'est pas utilisé comme critère principal
@@ -140,7 +140,7 @@ Le rapport est organisé en cinq parties correspondant aux chapitres du cours~:
   \item \textbf{Exploration et reproductibilité} (Ch.~2 et 3)~: mise en place de
         l'environnement Julia et analyse descriptive des données.
   \item \textbf{Série temporelle} (Ch.~3 et 4)~: construction de la série des notes
-        par saga et intégration numérique par trapèzes.
+        par saga et intégration numérique par la règle de Simpson.
   \item \textbf{Modèle ODE et prédiction} (Ch.~4)~: modélisation dynamique et
         implémentation manuelle de Runge-Kutta 4.
   \item \textbf{Tests statistiques} (Ch.~5)~: validation de la prédiction par
@@ -152,7 +152,7 @@ Le rapport est organisé en cinq parties correspondant aux chapitres du cours~:
 %                 SECTION 1 — EXPLORATION ET REPRODUCTIBILITÉ
 % =============================================================================
 \newpage
-\section{Exploration des données et reproductibilité (Ch.~2 et 3)}
+\section{Exploration des données et reproductibilité (Ch.2 et 3)}
 
 \subsection{Environnement Julia reproductible (Ch.~2)}
 
@@ -165,16 +165,16 @@ que le code produira exactement les mêmes résultats sur n'importe quelle machi
 \begin{lstlisting}[caption={Activation de l'environnement et fixation de la graine aléatoire}]
 import Pkg
 Pkg.activate(@__DIR__)   # charge Project.toml du dossier code/
-Pkg.instantiate()        # installe les versions exactes du Manifest.toml
+Pkg.instantiate() # installe les versions exactes du Manifest.toml
 
 import Random
-Random.seed!(42)         # seed fixee : tous les tirages aleatoires sont reproductibles
+Random.seed!(42) # seed fixee : tous les tirages aleatoires sont reproductibles
 \end{lstlisting}
 
 Les packages utilisés sont~:
 
 \begin{center}
-\begin{tabular}{L{3cm} L{9.5cm}}
+\begin{tabular}{L{4cm} L{8.5cm}}
 \toprule
 \textbf{Package} & \textbf{Rôle} \\
 \midrule
@@ -188,6 +188,7 @@ Les packages utilisés sont~:
 \end{tabular}
 \end{center}
 
+\newpage
 \subsection{Présentation du jeu de données}
 
 Le jeu de données contient huit fichiers CSV dont le tableau~\ref{tab:csv} résume
@@ -197,7 +198,7 @@ le contenu.
 \centering
 \caption{Les huit fichiers CSV du dataset IMDb.}
 \label{tab:csv}
-\begin{tabular}{L{5.5cm} r r L{5cm}}
+\begin{tabular}{L{6.5cm} r r L{4cm}}
 \toprule
 \textbf{Fichier} & \textbf{Lignes} & \textbf{Col.} & \textbf{Contenu} \\
 \midrule
@@ -213,10 +214,13 @@ le contenu.
 \end{tabular}
 \end{table}
 
-\subsection{One Piece dans les données (Ch.~3 — valeurs manquantes)}
+\subsection{One Piece dans les données (Ch.~3 valeurs manquantes)}
 
-One Piece est présent dans \textbf{6 fichiers sur 8} (absent du fichier de films
-et du top-250 épisode par épisode). La détection systématique des valeurs manquantes
+One Piece est présent dans \textbf{6 fichiers sur 8}, absent uniquement de~:
+\begin{itemize}
+  \item \code{top-250-movie-ratings.csv};
+  \item \code{00.imdb\_top\_250\_series\_episode\_ratings.csv};
+\end{itemize} La détection systématique des valeurs manquantes
 avec la fonction \code{ismissing} de Julia n'a révélé aucune valeur manquante dans
 les colonnes utiles à l'analyse.
 
@@ -224,6 +228,13 @@ Un fait majeur découvert lors de l'exploration~: les \textbf{883 épisodes} de 
 Piece sont tous enregistrés sous \code{Season = 1} dans le fichier
 \code{all-episode-ratings.csv}. La note globale de la série est de \textbf{8{,}4}
 (55\,423 votes) avec une note moyenne par épisode de \textbf{7{,}61}.
+
+% Je fais un petit test
+
+% \newpage
+% \section{Explication du code}
+
+
 
 % =============================================================================
 %               SECTION 2 — SÉRIE TEMPORELLE ET TRAPÈZES
@@ -233,12 +244,7 @@ Piece sont tous enregistrés sous \code{Season = 1} dans le fichier
 
 \subsection{Découpage en sagas officielles}
 
-Puisque le dataset ne découpe pas One Piece en saisons distinctes, nous utilisons
-le découpage en \textbf{sagas narratives officielles} issu du wiki One Piece. Ce
-choix est préférable à un découpage arbitraire (fenêtres de 50 épisodes) car il
-correspond à des unités narratives réelles, défendables devant tout lecteur. Les
-6 derniers épisodes du dataset (878--883, début de l'arc Reverie) sont fusionnés
-avec la saga précédente pour constituer la \textit{Saga des Quatre Empereurs}.
+Puisque le dataset ne découpe pas One Piece en saisons distinctes, nous utilisons le découpage en \textbf{sagas narratives officielles} issu du \href{https://onepiece.fandom.com/wiki/Story_Arcs}{\underline{wiki One Piece}}. Ce choix est préférable à un découpage arbitraire (fenêtres de 50 épisodes) car il  correspond à des unités narratives réelles, défendables devant tout lecteur. Les 6 derniers épisodes du dataset (878--883, début de l'arc Reverie) sont fusionnés avec la saga précédente pour constituer la \textit{Saga des Quatre Empereurs}.
 
 \begin{table}[ht!]
 \centering
@@ -265,33 +271,42 @@ $\bm{K}$ & $\bm{\lambda}$ \\
 \end{tabular}
 \end{table}
 
+Le code utilisé se situe aux lignes 29--55 et j'ai commenté les lignes.
+
+%-------------------------------------------------
+%           Integration numérique par trapeze
+%------------------------------------------------
 \subsection{Intégration numérique par trapèzes (Ch.~4)}
 
-Pour chaque saga, nous calculons une \textbf{note pondérée} à l'aide de la règle
-des trapèzes. En traitant chaque épisode comme un point $t = 1, 2, \ldots, n$ et
-sa note comme $R(t)$, la valeur moyenne de la fonction est~:
+Pour chaque saga, nous calculons une \textbf{note pondérée} à l'aide de la règle composite des trapèzes. En traitant chaque épisode comme un point $t = 1, 2, \ldots, n$
+et sa note comme $R(t)$, la valeur moyenne de la fonction est~:
 
 \begin{equation}
   \bar{R}_{\text{trap}} = \frac{1}{n-1} \int_{1}^{n} R(t)\,\mathrm{d}t
-  \approx \frac{\Delta t}{n-1}\left[\frac{R_1}{2} + R_2 + \cdots + R_{n-1}
+  \approx \frac{1}{n-1}\left[\frac{R_1}{2} + R_2 + R_3 + \cdots + R_{n-1}
   + \frac{R_n}{2}\right]
   \label{eq:trapeze}
 \end{equation}
 
-avec $\Delta t = 1$. Contrairement à la moyenne arithmétique simple, cette formule
-donne un demi-poids au premier et au dernier épisode de la saga. L'écart maximal
-observé entre les deux méthodes est de \textbf{0{,}0105 point}, faible pour les
-grandes sagas mais non nul. Le calcul se justifie pleinement dans les sagas à fort
-démarrage suivi d'une chute abrupte (ou inversement), où la pondération temporelle
-capture mieux la forme de la courbe.
+
+\newpage
+
+avec $h = \Delta t = 1$. Cette méthode a été préférée à la règle de Simpson
+pour deux raisons~:
+\begin{enumerate}
+  \item \textbf{Applicabilité universelle}~: la règle des trapèzes fonctionne pour
+        n'importe quel nombre d'épisodes $n$, sans contrainte de parité. La règle de Simpson requiert un nombre pair d'intervalles, ce qui obligerait à traiter différemment les sagas selon leur nombre d'épisodes.
+  \item \textbf{Simplicité et robustesse}~: avec des sagas de 58 à 172 épisodes,
+        le grand nombre de points rend l'écart entre trapèzes ($O(h^3)$ et Simpson ($O(h^5)$) négligeable en pratique, l'écart maximal observé entre les deux méthodes est inférieur à $0{,}01$ point de note.
+\end{enumerate}
 
 \begin{lstlisting}[caption={Intégration par trapèzes (extrait de \code{02\_timeseries.jl})}]
 function trapeze_mean(ratings::AbstractVector{<:Real})
     n = length(ratings)
     n == 1 && return Float64(ratings[1])
-    # integrale par la regle des trapezes (Delta t = 1)
+    # Delta t = 1 : integrale = somme des trapezes successifs
     integral = ratings[1]/2 + sum(ratings[2:end-1]) + ratings[end]/2
-    return integral / (n - 1)   # normalisation par la longueur de l'intervalle
+    return integral / (n - 1)
 end
 \end{lstlisting}
 
@@ -304,25 +319,24 @@ end
   \label{fig:sagas}
 \end{figure}
 
-La figure~\reff{fig:sagas} révèle une légère \textbf{tendance à la hausse} sur les
-trois dernières sagas, ce qui motive la suite de l'analyse.
+Le code utilisé se situe aux lignes 77-83 et j'ai commenté les lignes.
+
+\newpage
+La figure~\reff{fig:sagas} révèle une légère \textbf{tendance à la hausse} sur les trois dernières sagas, ce qui motive la suite de l'analyse.
 
 \begin{tcolorbox}[justif, title={Pourquoi les trapèzes et non la moyenne simple~?}]
 La moyenne arithmétique $\bar{R} = \frac{1}{n}\sum_{i=1}^{n} R_i$ donne un poids
 \textit{égal} à chaque épisode, y compris le premier et le dernier.
-La règle des trapèzes, elle, leur attribue un \textit{demi-poids}~: cela revient
-à dire que ces épisodes «~en bordure~» sont moins représentatifs de la tendance
-de fond de la saga.
+La règle des trapèzes, elle, leur attribue un \textit{demi-poids}~: les épisodes
+en bordure de saga sont considérés comme moins représentatifs de la tendance de fond.
 
-L'intérêt pratique apparaît sur la saga~2 (Alabasta)~: la saga démarre très fort
-(épisode 62, note 8{,}2) avant de se stabiliser. La moyenne simple surpondère ce
-pic d'ouverture~; la règle des trapèzes l'atténue, donnant une image plus fidèle
-de la qualité \textit{durable} de la saga (écart observé~: $+0{,}003$ point).
+L'intérêt pratique apparaît sur les sagas à fort démarrage suivi d'une stabilisation~:
+la moyenne simple surpondère le pic d'ouverture, tandis que la règle des trapèzes
+donne une image plus fidèle de la qualité durable de la saga.
 
 De plus, la formule~\eqref{eq:trapeze} se généralise naturellement aux données
 \textbf{lacunaires} (épisodes sans note)~: on intègre sur l'intervalle entre deux
-épisodes consécutifs notés, en pondérant par la longueur $\Delta t$, ce qu'une
-somme simple ne peut pas faire sans biais.
+épisodes consécutifs notés, ce qu'une somme simple ne peut pas faire sans biais.
 \end{tcolorbox}
 
 % =============================================================================
@@ -354,6 +368,19 @@ La solution analytique est $R(t) = K + (R_0 - K)\,e^{-\lambda t}$, ce qui
 confirme la convergence exponentielle vers $K$. Ce modèle est de type
 \textit{Ornstein-Uhlenbeck} (retour à la moyenne), couramment utilisé en finance
 et en physique statistique.
+
+\begin{tcolorbox}[justif, title={Autrement dit}]
+Chaque saga possède une note «~naturelle~» $K$ vers laquelle les épisodes tendent
+à revenir. Si un épisode est très bien noté, le suivant redescend vers $K$~; s'il
+est mal noté, le suivant remonte.
+
+Le paramètre $\lambda$ contrôle \textbf{à quelle vitesse} ce retour s'opère~:
+un $\lambda$ élevé signifie que les notes sont très stables et proches de $K$~;
+un $\lambda$ faible signifie que les notes varient beaucoup autour de $K$.
+
+C'est ce modèle qui permet ensuite de \textbf{prédire la note de la saga~10
+(Wano)} en estimant $K$ et $\lambda$ à partir des sagas précédentes.
+\end{tcolorbox}
 
 \subsection{Implémentation de Runge-Kutta 4 (Ch.~4 et Ch.~2)}
 
@@ -507,7 +534,7 @@ valider ou infirmer la prédiction.
 
 \subsection{Test 1 — Mann-Whitney (deux échantillons)}
 
-\textbf{Objectif~:} comparer la distribution des notes de saga d'One Piece à celle
+\textbf{Objectif~:} comparer la distribution des notes de saga d' da à celle
 d'un \textit{groupe de référence} composé de toutes les sagas issues de séries
 longues ($\geq 5$ sagas, One Piece exclu)~: 646 sagas de 74 séries.
 
@@ -729,7 +756,7 @@ Ch.~2 & \code{Project.toml} + \code{Manifest.toml}, seed \code{42}, discussion
 Ch.~3 & Détection des \code{missing} avec \code{ismissing}, modélisation des
         notes par saga comme série temporelle, régression pour la prédiction de $K$ \\
 Ch.~4 & ODE de retour à la moyenne $dR/dt = -\lambda(R-K)$, implémentation
-        manuelle de RK4, intégration par trapèzes pour la note pondérée \\
+        manuelle de RK4, intégration par Simpson pour la note pondérée \\
 Ch.~5 & Mann-Whitney (2 échantillons), Wilcoxon signed-rank (1 échantillon),
         bootstrap non-paramétrique — tous via \code{HypothesisTests.jl} \\
 \bottomrule
@@ -776,7 +803,7 @@ One Piece Wiki,
 Ce projet analyse les données IMDb des séries TV pour répondre à la question
 «~La prochaine saga de One Piece sera-t-elle un succès~?~». Après exploration
 de huit fichiers CSV, les 883 épisodes sont découpés en 9 sagas officielles.
-Une intégration numérique par trapèzes (Ch.~4) calcule la note pondérée par saga.
+Une intégration numérique par la règle de Simpson (Ch.~4) calcule la note pondérée par saga.
 Un modèle ODE de retour à la moyenne, résolu par Runge-Kutta 4 implémenté à la
 main, est ajusté sur chaque saga et utilisé pour prédire la saga~10. La prédiction
 ($\hat{R}_{10} = 7{,}791$, IC~95~\%~: [7{,}713~; 7{,}933]) est validée par trois
@@ -786,7 +813,7 @@ convergent~: la prochaine saga ne devrait \textit{pas} atteindre la moyenne de
 
 \medskip
 {\noindent\textbf{Mots-clés~:}} Julia, IMDb, One Piece, série temporelle, ODE,
-Runge-Kutta 4, trapèzes, Mann-Whitney, Wilcoxon, bootstrap, prédiction.
+Runge-Kutta 4, Simpson, Mann-Whitney, Wilcoxon, bootstrap, prédiction.
 \\[4pt]
 \noindent\rule[2pt]{\textwidth}{0.5pt}
 \begin{center}

@@ -1,7 +1,6 @@
 # 02_timeseries.jl — Construction de la série temporelle One Piece par saga
 # Ch3 : modélisation d'une série temporelle, traitement des missing
 # Ch4 : intégration numérique par la méthode des trapèzes
-
 import Pkg
 Pkg.activate(@__DIR__)
 Pkg.instantiate()
@@ -16,21 +15,18 @@ isdir(RESULTS_DIR) || mkdir(RESULTS_DIR)
 
 OP_CODE = "tt0388629"
 
-# ── 1. Chargement et filtrage One Piece ───────────────────────────────────────
+# chargement et filtrage one piece 
 ep_df = CSV.read(joinpath(DATA_DIR, "all-episode-ratings.csv"), DataFrame;
                  missingstring=["NA","","N/A"])
 
 # filter : garde uniquement les lignes où Code == OP_CODE
 op = filter(row -> !ismissing(row.Code) && row.Code == OP_CODE, ep_df)
-sort!(op, :Episode)   # sécurité : s'assurer que les épisodes sont dans l'ordre
+sort!(op, :Episode)   # assure que les épisodes sont dans l'ordre
 
 @printf("Épisodes One Piece chargés : %d  (eps. 1 à %d)\n", nrow(op), maximum(op.Episode))
 
-# ── 2. Définition des sagas officielles ───────────────────────────────────────
-# Source : One Piece Wiki — découpage par saga anime
-# Les 6 derniers épisodes (878-883) appartiennent à l'arc Reverie ;
-# trop peu pour une analyse seule, on les fusionne avec Zou + WCI
-# en une "Saga des Quatre Empereurs".
+# ok
+# 2. Définition des sagas officielles
 const SAGAS = [
     (1,  "East Blue",              1,   61),
     (2,  "Alabasta",              62,  135),
@@ -40,27 +36,30 @@ const SAGAS = [
     (6,  "Summit War",           385,  516),
     (7,  "Fish-Man Island",      517,  574),
     (8,  "Dressrosa",            575,  746),
-    (9,  "Quatre Empereurs",     747,  883),   # Zou + WCI + Reverie
+    (9,  "Quatre Empereurs",     747,  883),   
 ]
 
-# ── 3. Assignation des étiquettes de saga ─────────────────────────────────────
-# On ajoute une colonne SagaId et SagaName à chaque épisode
-op[!, :SagaId]   = zeros(Int, nrow(op))
-op[!, :SagaName] = fill("", nrow(op))
+# 3. Assignation des étiquettes de saga à chaque épisode
+# On ajoute une colonne SagaId et SagaName à chacun des épisodes
+op[!, :SagaId]   = zeros(Int, nrow(op))  # initialisation à 0 (non assigné)
+op[!, :SagaName] = fill("", nrow(op))   # initialisation à chaîne vide (non assigné)
 
-for (id, name, ep_start, ep_end) in SAGAS
+for (id, name, ep_start, ep_end) in SAGAS 
     mask = (op.Episode .>= ep_start) .& (op.Episode .<= ep_end)
-    op[mask, :SagaId]   .= id
-    op[mask, :SagaName] .= name
+    op[mask, :SagaId]   .= id  # assignation de l'ID de la saga
+    op[mask, :SagaName] .= name  # assignation du nom de la saga
 end
 
-# Vérification : épisodes non assignés ?
+# Vérification si il y a des épisodes non assignés 
 unassigned = count(op.SagaId .== 0)
 @printf("Épisodes non assignés : %d\n", unassigned)
 
-# ── 4. Intégration numérique par trapèzes (Ch4) ───────────────────────────────
+#ok
+
+# 4. Intégration numérique par trapèzes (Ch4) 
 #
-# Pour chaque saga on a une suite de notes r₁, r₂, …, rₙ (une par épisode).
+# Pour chaque saga on a une suite de notes r₁, r₂, …, rₙ (une par épisode, 
+# c'est la note individuelle par épisode).
 # On les traite comme des valeurs d'une fonction r(t) aux points t = 1,2,…,n.
 #
 # Règle des trapèzes sur n points équidistants (Δt = 1) :
@@ -77,13 +76,13 @@ unassigned = count(op.SagaId .== 0)
 #
 function trapeze_mean(ratings::AbstractVector{<:Real})
     n = length(ratings)
-    n == 1 && return Float64(ratings[1])   # cas dégénéré : un seul épisode
+    n == 1 && return Float64(ratings[1])
     # Δt = 1 → intégrale ≈ somme des trapèzes successifs
     integral = ratings[1]/2 + sum(ratings[2:end-1]) + ratings[end]/2
-    return integral / (n - 1)             # normalisation par la longueur
+    return integral / (n - 1)
 end
 
-# ── 5. Calcul de la série temporelle ──────────────────────────────────────────
+# 5. Calcul de la série temporelle des sagas
 # combine : applique plusieurs fonctions sur chaque groupe (saga)
 ts = combine(groupby(op, [:SagaId, :SagaName]),
     :Rating => mean                  => :MoySimple,    # moyenne arithmétique

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.4.17)  29 APR 2026 22:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.4.17)  30 APR 2026 13:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1548,82 +1548,77 @@ Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 165.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 166.
-
-Overfull \hbox (25.7918pt too wide) in paragraph at lines 184--184
-[]|\T1/lmtt/m/n/12 HypothesisTests.jl|  
- []
-
-
-Overfull \hbox (34.93495pt too wide) in paragraph at lines 211--211
+ [3]
+Overfull \hbox (6.4822pt too wide) in paragraph at lines 212--212
 []|\T1/lmtt/m/n/12 top-seasons-more-than-2-eps.csv|  
  []
 
-[3] [4] [5]
+[4] [5]
 <./images//one_piece_sagas.png, id=230, 903.375pt x 501.875pt>
 File: ./images//one_piece_sagas.png Graphic file (type png)
 <use ./images//one_piece_sagas.png>
-Package pdftex.def Info: ./images//one_piece_sagas.png  used on input line 300.
+Package pdftex.def Info: ./images//one_piece_sagas.png  used on input line 315.
 
 (pdftex.def)             Requested size: 384.7926pt x 213.78032pt.
- [6 <./images//one_piece_sagas.png>] [7] [8] [9]
-<./images//ode_saga9.png, id=287, 803.0pt x 401.5pt>
+ [6] [7 <./images//one_piece_sagas.png>] [8] [9]
+<./images//ode_saga9.png, id=290, 803.0pt x 401.5pt>
 File: ./images//ode_saga9.png Graphic file (type png)
 <use ./images//ode_saga9.png>
-Package pdftex.def Info: ./images//ode_saga9.png  used on input line 444.
+Package pdftex.def Info: ./images//ode_saga9.png  used on input line 471.
 (pdftex.def)             Requested size: 368.06528pt x 184.03671pt.
-<./images//ode_K_evolution.png, id=288, 803.0pt x 401.5pt>
+<./images//ode_K_evolution.png, id=291, 803.0pt x 401.5pt>
 File: ./images//ode_K_evolution.png Graphic file (type png)
 <use ./images//ode_K_evolution.png>
-Package pdftex.def Info: ./images//ode_K_evolution.png  used on input line 475.
+Package pdftex.def Info: ./images//ode_K_evolution.png  used on input line 502.
 
 (pdftex.def)             Requested size: 200.75996pt x 100.38087pt.
-<./images//ode_saga10_prediction.png, id=289, 803.0pt x 401.5pt>
+<./images//ode_saga10_prediction.png, id=292, 803.0pt x 401.5pt>
 File: ./images//ode_saga10_prediction.png Graphic file (type png)
 <use ./images//ode_saga10_prediction.png>
 Package pdftex.def Info: ./images//ode_saga10_prediction.png  used on input lin
-e 482.
+e 509.
 (pdftex.def)             Requested size: 200.75996pt x 100.38087pt.
- [10 <./images//ode_saga9.png>] [11 <./images//ode_K_evolution.png> <./images//
+ [10] [11 <./images//ode_saga9.png> <./images//ode_K_evolution.png> <./images//
 ode_saga10_prediction.png>] [12]
-<./images//boxplot_comparison.png, id=310, 702.625pt x 481.8pt>
+<./images//boxplot_comparison.png, id=313, 702.625pt x 481.8pt>
 File: ./images//boxplot_comparison.png Graphic file (type png)
 <use ./images//boxplot_comparison.png>
 Package pdftex.def Info: ./images//boxplot_comparison.png  used on input line 5
-63.
+90.
 (pdftex.def)             Requested size: 313.69025pt x 215.10976pt.
  [13 <./images//boxplot_comparison.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 596.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 623.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 2.00043pt
-(hyperref)                removed on input line 596.
+(hyperref)                removed on input line 623.
 
-<./images//bootstrap_saga10.png, id=317, 803.0pt x 421.575pt>
+<./images//bootstrap_saga10.png, id=320, 803.0pt x 421.575pt>
 File: ./images//bootstrap_saga10.png Graphic file (type png)
 <use ./images//bootstrap_saga10.png>
-Package pdftex.def Info: ./images//bootstrap_saga10.png  used on input line 628
+Package pdftex.def Info: ./images//bootstrap_saga10.png  used on input line 655
 .
 (pdftex.def)             Requested size: 355.51817pt x 186.65146pt.
 
-Overfull \hbox (2.25092pt too wide) in paragraph at lines 641--650
+Overfull \hbox (2.25092pt too wide) in paragraph at lines 668--677
  [][] 
  []
 
 [14] [15 <./images//bootstrap_saga10.png>] [16] [17] [18] [19] (./rapport.aux)
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: 3924D576BAAA0A1C3E221A4B40506FCC;6206.
+(rerunfilecheck)             Checksum: FF902B937E3515E9A506AAF62BEB3B44;6182.
  ) 
 Here is how much of TeX's memory you used:
- 59341 strings out of 476091
- 1387137 string characters out of 5794081
- 2468084 words of memory out of 5000000
- 78458 multiletter control sequences out of 15000+600000
- 590261 words of font info for 319 fonts, out of 8000000 for 9000
+ 59365 strings out of 476091
+ 1387369 string characters out of 5794081
+ 2471084 words of memory out of 5000000
+ 78459 multiletter control sequences out of 15000+600000
+ 591210 words of font info for 333 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 114i,14n,131p,1004b,2572s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 114i,14n,131p,1004b,1318s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-ec.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc
 }</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
@@ -1639,10 +1634,10 @@ nts/type1/public/lm/lmtt12.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on rapport.pdf (20 pages, 572250 bytes).
+Output written on rapport.pdf (20 pages, 573303 bytes).
 PDF statistics:
- 453 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
- 108 named destinations out of 1000 (max. 500000)
+ 458 PDF objects out of 1000 (max. 8388607)
+ 368 compressed objects within 4 object streams
+ 110 named destinations out of 1000 (max. 500000)
  78728 words of extra memory for PDF output out of 89155 (max. 10000000)
 
